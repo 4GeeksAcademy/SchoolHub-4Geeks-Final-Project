@@ -277,11 +277,12 @@ const ProfileForm = ({ user }) => {
       <form onSubmit={e => handleSubmit(e)}>
         <div className="ms-2 me-2 row mb-4">
           <div className="col-md-4 col-sm-auto ">
-            <label htmlFor="nombre" className="form-label">
+            <label htmlFor="input-nombre" className="form-label">
               Nombre
             </label>
             <StyledInput
               type="text"
+              id="input-nombre"
               name="nombre"
               className="form-control"
               value={userData.nombre || ""}
@@ -289,11 +290,12 @@ const ProfileForm = ({ user }) => {
             />
           </div>
           <div className="col-md-4 col-sm-auto ">
-            <label htmlFor="apellido" className="form-label">
+            <label htmlFor="input-apellido" className="form-label">
               Apellido
             </label>
             <StyledInput
               type="text"
+              id="input-apellido"
               name="apellido"
               className="form-control"
               value={userData.apellido || ""}
@@ -301,10 +303,11 @@ const ProfileForm = ({ user }) => {
             />
           </div>
           <div className="col-md-4 col-sm-auto ">
-            <label htmlFor="email" className="form-label">
+            <label htmlFor="input-email" className="form-label">
               Correo Electronico
             </label>
             <StyledInput
+              id="input-email"
               type="email"
               name="email"
               className="form-control"
@@ -315,10 +318,11 @@ const ProfileForm = ({ user }) => {
         </div>
         <div className="ms-2 me-2 row mb-6 ">
           <div className="col-md-4 col-sm-auto">
-            <label htmlFor="telefono" className="form-label">
+            <label htmlFor="input-telefono" className="form-label">
               Teléfono
             </label>
             <StyledInput
+              id="input-telefono"
               type="tel"
               name="telefono"
               className="form-control"
@@ -327,11 +331,12 @@ const ProfileForm = ({ user }) => {
             />
           </div>
           <div className="col-md-8 col-sm-auto">
-            <label htmlFor="direccion" className="form-label">
+            <label htmlFor="input-direccion" className="form-label">
               Dirección
             </label>
             <StyledInput
               type="textarea"
+              id="input-direccion"
               name="direccion"
               className="form-control"
               value={userData.direccion || ""}
@@ -343,10 +348,11 @@ const ProfileForm = ({ user }) => {
 
           {isTeacher && (
             <div className="col-md-12 col-sm-auto">
-              <label htmlFor="descripcion" className="form-label">
+              <label htmlFor="input-descripcion" className="form-label">
                 Descripción
               </label>
               <textarea
+                id="input-descripcion"
                 type="textarea"
                 name="descripcion"
                 className="form-control"

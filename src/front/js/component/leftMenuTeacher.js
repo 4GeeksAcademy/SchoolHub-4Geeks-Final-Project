@@ -35,7 +35,16 @@ const FormCommon = ({ type }) => {
         setGrades(initialGrades);
     }, [store.calificaciones]);
 
-
+    useEffect(() => {
+        if (type === 'updateEvaluation') {
+            setSelectedCourse('');
+            setSelectedSubject('');
+        }
+        if (type === 'updateTest') {
+            setSelectedSubject('');
+            setSelectedTest('');
+        }
+    }, [type]);
 
     const handleChange = (e, studentId) => {
         const { name, value } = e.target;
@@ -91,7 +100,7 @@ const FormCommon = ({ type }) => {
         if (type === 'updateEvaluation') {
             actions.setTests();
         }
-        if (type === 'editar') {
+        if (type === 'updateTest') {
             actions.setScores();
         }
     }, [type, selectedCourse]);
@@ -99,6 +108,11 @@ const FormCommon = ({ type }) => {
     const handleDeleteScore = async (scoreId) => {
         await actions.scoreOperations('DELETE', ' ', scoreId);
         actions.setScores();
+    };
+
+    const handleDeleteTest = async (testId) => {
+        await actions.testsOperations('DELETE', ' ', testId);
+        actions.setTests();
     };
 
     const handleDateChange = (date) => {
@@ -130,7 +144,7 @@ const FormCommon = ({ type }) => {
                     "estudiantes_notas": estudiantes_notas
                 })
             }
-            if (type === 'editar') {
+            if (type === 'updateTest') {
                 const updateScores = store.calificaciones.map(score => ({
                     estudiante_id: parseInt(score.estudiante.id, 10),
                     nota: parseFloat(grades[score.estudiante.id])
@@ -157,6 +171,8 @@ const FormCommon = ({ type }) => {
                 materia_id: ''
             });
             setGrades({});
+            setSelectedSubject({});
+            setSelectedCourse({});
             setStartDate(new Date());
 
         } catch (error) {
@@ -172,7 +188,7 @@ const FormCommon = ({ type }) => {
         <div className="container ms-2">
 
             <form onSubmit={(e) => submitFormData(e)} className="container-welcome-teacher">
-                <h4 className="text-title d-flex justify-content-center mb-4">{`${type === 'crear' ? 'Crear' : type === 'calificar' ? 'Calificar' : type === 'updateEvaluation' ? 'Modificar' : type === 'editar' ? 'Editar' : ''} evaluación`}</h4>
+                <h4 className="text-title d-flex justify-content-center mb-4">{`${type === 'crear' ? 'Crear' : type === 'calificar' ? 'Calificar' : type === 'updateEvaluation' ? 'Modificar' : type === 'updateTest' ? 'updateTest' : ''} evaluación`}</h4>
 
                 {/* Formulario para crear evaluaciones */}
 
@@ -338,7 +354,7 @@ const FormCommon = ({ type }) => {
                     </div>
                 )}
 
-                {/* Formulario para editar las evaluaciones */}
+                {/* Formulario para modificar las evaluaciones */}
 
                 {type === 'updateEvaluation' && (
                     <div>
@@ -370,6 +386,7 @@ const FormCommon = ({ type }) => {
                                     className="custom-select rounded-pill w-100"
                                     name="materia_id"
                                     required
+                                    disabled={!selectedCourse}
                                     onChange={handleChange}
                                     id="inputGroupSelect04">
                                     onChange={(e) => handleChange(e)}
@@ -392,7 +409,7 @@ const FormCommon = ({ type }) => {
                                             <th scope="col" className="text-center">Descripción</th>
                                             <th scope="col" className="text-center">Fecha</th>
                                             <th scope="col" className="text-center">Estado</th>
-                                            <th scope="col" className="text-center">Editar/Eliminar</th>
+                                            <th scope="col" className="text-center">updateTest/Eliminar</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -417,7 +434,7 @@ const FormCommon = ({ type }) => {
                                                         <button
                                                             type="button"
                                                             className="btn btn-outline-danger"
-                                                            onClick={() => handleDeleteScore(score.id)}>
+                                                            onClick={() => handleDeleteTest(test.id)}>
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </td>
@@ -431,10 +448,10 @@ const FormCommon = ({ type }) => {
                 )
                 }
 
-                {/* Formulario para editar las notas o calificaciones */}
+                {/* Formulario para modificar las notas o calificaciones */}
 
                 {
-                    type === 'editar' && (
+                    type === 'updateTest' && (
                         <div>
                             <div className="mb-3">
                                 <span className="text-white">Para ver la lista de calificaciones, primero selecciona la materia y la evaluación en las opciones a continuación:</span>
@@ -487,7 +504,7 @@ const FormCommon = ({ type }) => {
                                                 <th scope="col">Nombre</th>
                                                 <th scope="col">Apellido</th>
                                                 <th scope="col" className="text-center">Calificación</th>
-                                                <th scope="col" className="text-center">Editar</th>
+                                                <th scope="col" className="text-center">updateTest</th>
                                                 <th scope="col" className="text-center">Eliminar</th>
                                             </tr>
                                         </thead>
@@ -559,7 +576,7 @@ export const LeftMenuTeacher = () => {
     };
 
     const handleEditGrades = () => {
-        setActiveContent("editar");
+        setActiveContent("updateTest");
     };
 
     const handleEditProfile = (edit = true) => {
@@ -582,8 +599,8 @@ export const LeftMenuTeacher = () => {
                 return <FormCommon type="calificar" />;
             case "updateEvaluation":
                 return <FormCommon type="updateEvaluation" />;
-            case "editar":
-                return <FormCommon type="editar" />;
+            case "updateTest":
+                return <FormCommon type="updateTest" />;
             default:
                 return (
                     <div className="container-fluid container-welcome-parent mt-2">
@@ -591,7 +608,7 @@ export const LeftMenuTeacher = () => {
                             <img src={imgWelcome} alt="welcome image" className="welcome-icon" />
                             <div>
                                 <h1 className="text-title display-4">¡Siempre es un gusto tenerte de vuelta!</h1>
-                                <p className="lead text-content">Recuerda usar el menú de la izquierda para ingresar o editar la información de los estudiantes.</p>
+                                <p className="lead text-content">Recuerda usar el menú de la izquierda para ingresar o updateTest la información de los estudiantes.</p>
                             </div>
                         </div>
                     </div>
@@ -627,37 +644,37 @@ export const LeftMenuTeacher = () => {
                                     <span className="ms-1 d-none d-sm-inline">Pruebas</span>
                                 </Link>
                                 <ul className="collapse nav flex-column ms-1" id="submenu1" data-bs-parent="#menu">
-                                    <li className="w-100 list-menu-item ">
+                                    <li className="w-100  ">
                                         <Link to="#" className="nav-link px-0 text-white" onClick={handleCreateEvaluation}>
                                             <i className="fs-4 bi-file-earmark-plus"></i>
-                                            <span className="ms-2 d-none d-sm-inline" >Crear</span>
+                                            <span className="ms-2 d-none list-menu-item d-sm-inline" >Crear</span>
                                         </Link>
                                     </li>
-                                    <li className="list-menu-item">
+                                    <li className="">
                                         <Link to="#" className="nav-link px-0 text-white" onClick={handleGradeEvaluation}>
                                             <i className="fs-4 bi-file-earmark-check"></i>
-                                            <span className="ms-2 d-none d-sm-inline" >Calificar</span>
+                                            <span className="ms-2 list-menu-item d-none d-sm-inline" >Calificar</span>
                                         </Link>
                                     </li>
                                 </ul>
 
                             </li>
                             <li className="list-menu-item ms-5">
-                                <Link to="#submenuEditar" data-bs-toggle="collapse" className="nav-link px-0 align-middle text-white ">
+                                <Link to="#submenuupdateTest" data-bs-toggle="collapse" className="nav-link px-0 align-middle text-white ">
                                     <i className="fs-4 bi-pen"></i>
                                     <span className="ms-1 d-none d-sm-inline ">Editar</span>
                                 </Link>
-                                <ul className="collapse nav flex-column ms-1" id="submenuEditar" data-bs-parent="#menu">
-                                    <li className="w-100 list-menu-item ">
+                                <ul className="collapse nav flex-column ms-1" id="submenuupdateTest" data-bs-parent="#menu">
+                                    <li className="w-100">
                                         <Link to="#" className="nav-link px-0 text-white" onClick={handleUpdateEvaluation}>
-                                            <i className="fs-4 bi-file-earmark-plus"></i>
-                                            <span className="ms-2 d-none d-sm-inline" >Pruebas</span>
+                                            <i class="bi bi-file-earmark-medical"></i>
+                                            <span className="ms-2 d-none list-menu-item d-sm-inline" >Pruebas</span>
                                         </Link>
                                     </li>
-                                    <li className="list-menu-item">
+                                    <li className="">
                                         <Link to="#" className="nav-link px-0 text-white" onClick={handleEditGrades}>
-                                            <i className="fs-4 bi-file-earmark-check"></i>
-                                            <span className="ms-2 d-none d-sm-inline" >Notas</span>
+                                            <i class="bi bi-file-earmark-diff"></i>
+                                            <span className="ms-2 list-menu-item d-none d-sm-inline" >Notas</span>
                                         </Link>
                                     </li>
                                 </ul>

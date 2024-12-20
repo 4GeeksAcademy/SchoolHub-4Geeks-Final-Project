@@ -483,8 +483,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						break;
 					case "representante":
 						await actions.getParentInfo()
+						break;
 					case "docente":
 						await actions.getTeacherInfo()
+						break;
 					default:
 						break;
 				}

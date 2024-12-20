@@ -117,10 +117,10 @@ const LoginForm = () => {
                             <img src={logoLoggin} alt='logo' className='img-fluid mb-5' style={{ maxWidth: '100%', height: 'auto', filter: 'drop-shadow(2px 4px 6px black)' }} />
                             <p>Una nueva forma de seguir la educación de tus hijos, sus progresos, eventos y logros académicos, al alcance de un clic.</p>
                             <div className='d-flex display-6'>
-                                <i class="bi bi-facebook me-3"></i>
-                                <i class="bi bi-instagram me-3"></i>
-                                <i class="bi bi-twitter-x me-1"></i>
-                                <i class="bi bi-youtube me-3"></i>
+                                <i className="bi bi-facebook me-3"></i>
+                                <i className="bi bi-instagram me-3"></i>
+                                <i className="bi bi-twitter-x me-1"></i>
+                                <i className="bi bi-youtube me-3"></i>
                             </div>
                             <span>Síguenos en redes.</span>
                         </div>
