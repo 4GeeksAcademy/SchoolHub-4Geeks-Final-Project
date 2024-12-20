@@ -188,7 +188,7 @@ const FormCommon = ({ type }) => {
         <div className="container ms-2">
 
             <form onSubmit={(e) => submitFormData(e)} className="container-welcome-teacher">
-                <h4 className="text-title d-flex justify-content-center mb-4">{`${type === 'crear' ? 'Crear' : type === 'calificar' ? 'Calificar' : type === 'updateEvaluation' ? 'Modificar' : type === 'updateTest' ? 'updateTest' : ''} evaluación`}</h4>
+                <h4 className="text-title d-flex justify-content-center mb-4">{`${type === 'crear' ? 'Crear' : type === 'calificar' ? 'Calificar' : type === 'updateEvaluation' ? 'Modificar' : type === 'updateTest' ? 'Actualizar la nota de la' : ''} evaluación`}</h4>
 
                 {/* Formulario para crear evaluaciones */}
 
@@ -359,11 +359,11 @@ const FormCommon = ({ type }) => {
                 {type === 'updateEvaluation' && (
                     <div>
                         <div className="mb-3">
-                            <span className="text-white">Para ver la lista de calificaciones, primero selecciona la materia y la evaluación en las opciones a continuación:</span>
+                            <span className="text-white">Para ver la lista de calificaciones, primero selecciona un grado y la materia en las opciones a continuación:</span>
                         </div>
                         <div className="row g-3">
                             <div className="d-flex flex-column col">
-                                <label className="form-label text-form">Elige el curso:</label>
+                                <label className="form-label text-form">Elige el grado:</label>
                                 <div className="input-group" required>
                                     <select
                                         className="custom-select rounded-pill w-100"
@@ -545,7 +545,9 @@ const FormCommon = ({ type }) => {
                 }
 
                 <div className="d-flex justify-content-center mt-5">
-                    <button type="submit" className="btn btn-outline-register">Registrar</button>
+                    {type !== 'updateEvaluation' && (
+                        <button type="submit" className="btn btn-outline-register">Registrar</button>
+                    )}
                 </div>
             </form >
         </div >
