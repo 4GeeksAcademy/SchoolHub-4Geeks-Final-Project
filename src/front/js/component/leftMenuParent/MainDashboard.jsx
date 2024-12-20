@@ -51,8 +51,10 @@ const MainDashboard = ({ dataEvents, estudiantes }) => {
         <div className="col-md-4 col-sm-12 ">
           <BoxDisplay aspect="1/1" classname="align-items-center ">
             {estudiantes.length == 0 ? (
-              <div className="w-100 h-100 d-flex justify-content-center align-items-center ">
-                <Spinner animation="border" variant="light" />
+              <div className="container-fluid d-flex flex-column justify-content-center align-items-center mt3">
+                <Spinner animation="grow" variant="light" className="mt-2" />
+                <h3 className="text-center text-light mt-0">Estamos cargando su información</h3>
+                <h6 className="text-center text-light">Por favor espere un momento...</h6>
               </div>
             ) : (
               <>
@@ -114,8 +116,10 @@ const MainDashboard = ({ dataEvents, estudiantes }) => {
         <div className="col-12 d-flex justify-content-center align-items-center">
           <BoxDisplay classname="align-items-center pt-3" flex="row" aspect="16/9">
             {estudiantes.length == 0 ? (
-              <div className="w-100 h-100 d-flex justify-content-center align-items-center">
-                <Spinner animation="border" variant="light" />
+              <div className="container-fluid d-flex flex-column justify-content-center align-items-center mt3">
+                <Spinner animation="grow" variant="light" className="mt-2" />
+                <h2 className="text-center text-light mt-0">Estamos cargando su información</h2>
+                <h6 className="text-center text-light">Por favor espere un momento...</h6>
               </div>
             ) : (
               <>

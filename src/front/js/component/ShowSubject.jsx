@@ -12,14 +12,14 @@ border: 1px solid grey;
 
 
 
-export const Progress = (value = 5, min = 0, max = 20) => {
+export const Progress = (value = 5, min = 0, max = 10) => {
     let variant = "success"
 
-    if (value < 10) {
+    if (value < 5) {
         variant = "danger"
-    } else if (value < 15) {
+    } else if (value < 7) {
         variant = "warning"
-    } else if (value < 18) {
+    } else if (value < 8) {
         variant = 'info'
     }
 

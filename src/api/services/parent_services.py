@@ -1,7 +1,9 @@
 from flask import jsonify
 from sqlalchemy.exc import SQLAlchemyError
-from api.models import Docente, DocenteMaterias, User, Estudiante, Materias
+from api.models import Docente, DocenteMaterias, Evaluacion, User, Estudiante, Materias
 from marshmallow import ValidationError
+
+from api.services.generic_services import format_date, get_feriadosAPI
 
 
 def get_student_resume(parent_id):
@@ -120,3 +122,50 @@ def get_students_info(parent_id):
         return jsonify({"msg": "Error collecting student data"}), 500
         
     return data
+
+
+
+
+def get_parent_schedule(id):
+    
+    representante = User.query.get(id)
+    
+    if not representante:
+        return jsonify({"msg": "Representante no encontrado"}),404
+    
+    
+    try:
+        feriados = get_feriadosAPI()
+        
+        
+        
+        children = Estudiante.query.filter_by(representante_id=id).all()
+        if not children:
+            return {"evaluaciones": [],
+                    "feriados": feriados}
+        
+        
+        grados = [child.grado.id for child in children]
+        materias = Materias.query.filter(Materias.grado_id.in_(grados)).all()
+        evaluaciones = Evaluacion.query.filter(Evaluacion.materia_id.in_([materia.id for materia in materias])).all()
+        
+        fechas_evaluaciones = [{"date": format_date(evaluacion.fecha),
+                "title": evaluacion.nombre,
+                "holiday": False,
+                "finalizada": evaluacion.finalizada,
+                "profesor": f"{evaluacion.profesor.nombre} {evaluacion.profesor.apellido}",
+                "materia": evaluacion.materia.nombre,
+                "grado": evaluacion.materia.grado.nombre} for evaluacion in evaluaciones]
+                
+        
+        
+        body = {"evaluaciones": fechas_evaluaciones,
+                "feriados": feriados}
+        
+        
+    except Exception as e:
+        
+        print("Error: " + str(e))
+        return jsonify({"error": "Exception raised"})
+    
+    return body

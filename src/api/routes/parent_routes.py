@@ -6,7 +6,7 @@ from flask import Flask, request, jsonify, Blueprint
 from api.models import User, Role
 from flask_cors import CORS
 from flask_jwt_extended import get_jwt, verify_jwt_in_request, get_jwt_identity
-from api.services.parent_services import get_students_info
+from api.services.parent_services import get_parent_schedule, get_students_info
 from api.services.generic_services import  get_schedule
 from api.services.external_services import get_image
 from api.schemas.schemas import UserSchema
@@ -45,7 +45,7 @@ def get_parent_info():
         return jsonify({"msg": "Representante no encontrado"}),404
     parent_data = user_schema.dump(parent)
     parent_data['estudiantes'] = get_students_info(parent_id)
-    parent_data["calendario"] = get_schedule()
+    parent_data["calendario"] = get_parent_schedule(parent_id)
     parent_data["foto"] = get_image(parent_data["foto"]) if parent_data["foto"] else None
     
     
