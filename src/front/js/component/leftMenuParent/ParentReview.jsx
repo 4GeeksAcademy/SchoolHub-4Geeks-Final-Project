@@ -25,7 +25,7 @@ background: red;
 
 
 const getBaseSubjectInfo = (calificaciones, subject_id) => {
-    const minGrade = 10
+    const minGrade = 6
 
 
     if (!calificaciones.length || !subject_id) {
